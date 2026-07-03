@@ -90,28 +90,28 @@ The application analyzes the uploaded resume, predicts the most suitable job rol
 
 <p align="center">
     <img width="714" height="316" alt="image" src="https://github.com/user-attachments/assets/8798604d-36f4-459f-a0f5-9221d842f61a" />
-    <p align="center">Home Screen of Resume Analyzer System</p>
+    <p align="center">Fig: Home Screen of Resume Analyzer System</p>
 </p>
 
 ---
 
 <p align="center">
     <img width="708" height="337" alt="image" src="https://github.com/user-attachments/assets/0a9abb51-7071-4fe3-8c86-f7633e33f620" />
-    <p align="center">Text Input Interface for Resume Analysis</p>
+    <p align="center">Fig: Text Input Interface for Resume Analysis</p>
 </p>
 
 ---
 
 <p align="center">
     <img width="708" height="337" alt="image" src="https://github.com/user-attachments/assets/bce8766b-7a8d-4ad5-8015-3ab57d18037f" />
-    <p align="center">PDF upload Interface for Resume Analysis</p>
+    <p align="center">Fig: PDF upload Interface for Resume Analysis</p>
 </p>
 
 ---
 
 <p align="center">
     <img width="662" height="359" alt="image" src="https://github.com/user-attachments/assets/d8b5bb52-93df-4552-8f75-298d520305ab" />
-    <p align="center">Result Page Showing Predicted Job Role and Skill Analysis</p>
+    <p align="center">Fig: Result Page Showing Predicted Job Role and Skill Analysis</p>
 </p>
 
 ---
