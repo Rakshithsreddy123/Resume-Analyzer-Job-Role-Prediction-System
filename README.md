@@ -84,10 +84,12 @@ streamlit run app.py
 
 The application analyzes the uploaded resume, predicts the most suitable job role, calculates an ATS score, identifies missing skills, and provides personalized recommendations to enhance the resume.
 
+---
 
-#### 📸 Home Screen of Resume Analyzer System
+## 📸 Snapshots
 <p align="center">
     <img width="714" height="316" alt="image" src="https://github.com/user-attachments/assets/8798604d-36f4-459f-a0f5-9221d842f61a" />
+    <p>Home Screen of Resume Analyzer System</p>
 </p>
 
 ---
