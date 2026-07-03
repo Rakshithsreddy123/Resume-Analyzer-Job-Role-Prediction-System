@@ -1,4 +1,4 @@
-<img width="847" height="409" alt="image" src="https://github.com/user-attachments/assets/2b3c65a2-a9d6-4b30-891c-f3c5fbb18232" /># 📄 Resume Analyzer & Job Role Prediction System
+# 📄 Resume Analyzer & Job Role Prediction System
 
 An AI-powered web application that analyzes resumes, predicts the most suitable job role using Machine Learning, evaluates ATS compatibility, and provides personalized recommendations to improve employability.
 
@@ -83,6 +83,7 @@ streamlit run app.py
 ## 📊 Output
 
 The application analyzes the uploaded resume, predicts the most suitable job role, calculates an ATS score, identifies missing skills, and provides personalized recommendations to enhance the resume.
+
 
 #### 📸 Home Screen of Resume Analyzer System
 <p align="center">
