@@ -20,14 +20,14 @@
             <div class="score-card">
                 <h3>Skill Match</h3>
                 <div class="progress">
-                    <div class="progress-bar" style="width: {{skill_match_score}}%;">{{ skill_match_score }}%</div>
+                    <div class="progress-bar" id="skill-bar" data-width="{{skill_match_score}}%">{{ skill_match_score }}%</div>
                 </div>
             </div>
 
             <div class="score-card">
                 <h3>Overall Score</h3>
                 <div class="progress">
-                    <div class="progress-bar" style="width: {{resume_score}}%;">{{ resume_score }}%</div>
+                    <div class="progress-bar" id="overall-bar" data-width="{{resume_score}}%">{{ resume_score }}%</div>
                 </div>
             </div>
         </div>
@@ -58,6 +58,12 @@
 
         <a href="{{ url_for('index') }}" class="upload-btn">Upload another Resume</a>
     </div>
+
+    <script>
+        // Apply widths using JS to bypass strict CSS linters that dislike Jinja syntax inside style fields
+        document.getElementById('skill-bar').style.width = document.getElementById('skill-bar').getAttribute('data-width');
+        document.getElementById('overall-bar').style.width = document.getElementById('overall-bar').getAttribute('data-width');
+    </script>
 </body>
 
 </html>

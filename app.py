@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import pickle
 import pdfplumber
 from rapidfuzz import fuzz
+import re
 
 model = pickle.load(open("models/model.pkl","rb"))
 vectorizer = pickle.load(open("models/vectorizer.pkl","rb")) 
@@ -30,17 +31,8 @@ def service():
 def text_predict():
 
     resume_text = request.form['resume_text']
-    
-    vector = vectorizer.transform([resume_text])
-    
-    predict = model.predict(vector)
-    
-    probability = model.predict_proba(vector)
-    
-    confidence = max(probability[0])*100
-    confidence_score = round(confidence,2)
 
-    role,required,matched,missing = analyze_resume(resume_text)
+    role,confidence_score,required,matched,missing = analyze_resume(resume_text)
     
     skill_match_score = skill_match(required,matched)
     
@@ -55,33 +47,33 @@ def text_predict():
                            skill_match_score=skill_match_score,
                            resume_score = resume_score)
 
-@app.route("/file_predict", methods=["POST"],)
+@app.route("/file_predict", methods=["POST"])
 def file_predict():
+    print("✅ [DEBUG] File upload received!")  # 👈 ADD THIS FIRST LINE
+
     
     file = request.files["resume_file"]
     text = ""
     
     with pdfplumber.open(file) as pdf:
         for page in pdf.pages:
-            text+=page.extract_text()
-            
-    vector = vectorizer.transform([text])
+            page_text = page.extract_text()
+        if page_text:
+            text +=" "+page_text
+
+    print(f"✅ [DEBUG] Extracted text length: {len(text)}")  # 👈 ADD THIS
+
     
-    predict = model.predict(vector)
-    probability = model.predict_proba(vector)
-    
-    confidence = max(probability[0])*100
-    confidence_score = round(confidence,2)
-    
-    role,required,matched,missing = analyze_resume(text)
+    role,confidence_score,required,matched,missing = analyze_resume(text)
     
     skill_match_score = skill_match(required,matched)
-    print("Skill Match Score:", skill_match_score)
     
     resume_score = overall_score(skill_match_score,confidence_score)
     
+    print("PREDICTED ROLE:",role)
+
     return render_template("result.html",
-                           role=role,
+                           predicted_role=role,
                            confidence_score=confidence_score,
                            required_skills=required,
                            matched_skills=matched,
@@ -94,29 +86,31 @@ def analyze_resume(text):
     
     text = text.lower()
     
-    vector = vectorizer.transform([text])
-    predict = model.predict(vector)
+    clean_text = re.sub(r'[^\w\s]', ' ', text)
+    clean_text = re.sub(r'\s+', ' ', clean_text).strip()
     
+    vector = vectorizer.transform([clean_text])
+
+    predict = model.predict(vector)
     predicted_role = predict[0]
+
+    # Confidence
+    probability = model.predict_proba(vector)
+    confidence = max(probability[0]) * 100
+    confidence_score = round(confidence, 2)
     
     required_skills = role_required_skills.get(predicted_role,[])
     mentioned_skills = []
     missing_skills = []
     
-    words = text.split()
-    
     for skill in required_skills:
-        found = False
-        for word in words:
-            similarity = fuzz.ratio(skill,word)
-            if similarity>80:
-                mentioned_skills.append(skill)
-                found = True
-                break
-        if not found:
+        similarity = fuzz.token_set_ratio(skill, clean_text)
+        if similarity > 80:
+            mentioned_skills.append(skill)
+        else:
             missing_skills.append(skill)
     
-    return predicted_role,required_skills,mentioned_skills,missing_skills
+    return predicted_role,confidence_score,required_skills,mentioned_skills,missing_skills
 
 def skill_match(required,mentioned):
     
@@ -137,4 +131,4 @@ def overall_score(skill_match_score, confidence_score):
 
     
 if __name__=="__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(debug=True)
